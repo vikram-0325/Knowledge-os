@@ -211,7 +211,7 @@ function useMobile(){
 
 export default function App() {
 
-  const mobile = window.innerWidth < 768
+  const mobile = useMobile()
 
   return (
     <AppProvider>
@@ -909,7 +909,7 @@ set({
   flex:1,
   overflowY:"auto",
   padding:"16px 20px",
-  paddingBottom:220,
+  paddingBottom:120,
   display:"flex",
   flexDirection:"column",
   gap:14
@@ -949,7 +949,7 @@ gap:9 }}>
       </div>
       <div style={{
   position:"fixed",
-  bottom: expanded ? 200 : 95,
+  bottom: "calc(70px + env(safe-area-inset-bottom))",
   left:"50%",
   transform:"translateX(-50%)",
   width:"92%",
@@ -1661,7 +1661,9 @@ function FloatingAI(){
    onClick={()=>set({tool:"chat"})}
    style={{
     position:"fixed",
-    bottom: window.innerWidth < 768 ? 80 : 25,
+    bottom: window.innerWidth < 768 
+  ? "calc(80px + env(safe-area-inset-bottom))" 
+  : 25,
     right:25,
     width:56,
     height:56,
@@ -1798,7 +1800,7 @@ function BottomNav(){
 
   const { tool, set } = useApp()
 
-  const mobile = window.innerWidth < 768
+  const mobile = useMobile()
 
   if(!mobile) return null
 
@@ -1816,7 +1818,8 @@ function BottomNav(){
       bottom:0,
       left:0,
       right:0,
-      height:60,
+      height:"calc(60px + env(safe-area-inset-bottom))",
+paddingBottom:"env(safe-area-inset-bottom)",
       background:"#0d1220",
       borderTop:"1px solid rgba(255,255,255,0.06)",
       display:"flex",
