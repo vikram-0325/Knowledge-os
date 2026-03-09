@@ -485,21 +485,20 @@ const onTouchEnd = (e)=>{
       {/* Sidebar */}
       {/* Sidebar */}
 <div style={{
-  width: mobile ? 220 : (sidebar ? 218 : 50),
-  position: mobile ? "fixed" : "relative",
-  left:0,
-  top:0,
-  transform: mobile ? (sidebar ? "translateX(0)" : "translateX(-100%)") : "none",
-  transition:"transform 0.25s cubic-bezier(.4,0,.2,1)",
-  zIndex: mobile ? 300 : "auto",
-  height:"100%",
-  background:"#0d1220",
-  borderRight:"1px solid rgba(255,255,255,0.06)",
-  display:"flex",
-  flexDirection:"column",
-  flexShrink:0,
-  overflow:"hidden",
-  transition:"width 0.2s ease"
+ width: mobile ? 220 : (sidebar ? 218 : 50),
+ position: mobile ? "fixed" : "relative",
+ left:0,
+ top:0,
+ transform: mobile ? (sidebar ? "translateX(0)" : "translateX(-100%)") : "none",
+ transition:"transform 0.25s cubic-bezier(.4,0,.2,1), width 0.2s ease",
+ zIndex: mobile ? 300 : "auto",
+ height:"100%",
+ background:"#0d1220",
+ borderRight:"1px solid rgba(255,255,255,0.06)",
+ display:"flex",
+ flexDirection:"column",
+ flexShrink:0,
+ overflow:"hidden"
 }}>
         {/* Logo row */}
         <div style={{ display:"flex", alignItems:"center", gap:8, padding:"13px 10px", borderBottom:"1px solid rgba(255,255,255,0.06)", height:52, flexShrink:0 }}>
@@ -1413,9 +1412,12 @@ function Essay() {
   const getFb=async()=>{ if(!essay.trim()) return; setFbLoading(true); try{ const r=await callAI([{role:"user",content:`Grade this essay (A-F) and give specific feedback on: thesis, evidence, structure, language:\n\n${essay}`}],"",profile); setFb(r); addXP(5); }catch(e){toast(e.message,"error","✗");} setFbLoading(false); };
   return (
     <Page title="✒ Essay Era" sub="AI-assisted essay writing">
-      <div style={{ display:"flex",
+      <div style={{
+display:"flex",
 flexWrap:"wrap",
-gap:9, marginBottom:14, flexWrap:"wrap" }}>
+gap:9,
+marginBottom:14
+}} >
         <input value={topic} onChange={e=>setTopic(e.target.value)} placeholder="Essay topic…" style={{...C.input,flex:2,minWidth:180}} />
       <select
   value={type}
