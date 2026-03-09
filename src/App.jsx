@@ -751,7 +751,12 @@ function Dashboard() {
     { id:"tldr",c:"#38bdf8",e:"≡",l:"TL;DR" },
   ];
   return (
-    <div style={{ height:"100%", overflowY:"auto", padding:"24px 28px", maxWidth:860 }}>
+    <div style={{ 
+  height:"100%", 
+  overflowY:"auto", 
+  padding:"24px 28px 140px", 
+  maxWidth:860 
+}}>
       {/* Header */}
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:24 }}>
         <div>
