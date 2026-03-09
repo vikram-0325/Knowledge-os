@@ -851,16 +851,21 @@ function Chat() {
     const final = [...next, { role:"assistant", content:reply }];
     setMsgs(final);
 
-    const title = next[0]?.content?.slice(0,30) || "Chat";
+    let title = chats.find(c=>c.id===currentChatId)?.title
 
-    await db.saveChat(currentChatId, final, title);
+if(!title || title === "New Chat"){
+  title = userMsg.content.slice(0,40)
+}
 
-    set({
-      chats: chats.map(c =>
-        c.id === currentChatId ? { ...c, messages: final, title } : c
-      )
-    });
+   await db.saveChat(currentChatId, final, title);
 
+// refresh chat list
+const updatedChats = await db.listChats(profile.id);
+
+set({
+  chats: updatedChats,
+  chatId: currentChatId
+});
     addXP(5);
 
   } catch(e) {
