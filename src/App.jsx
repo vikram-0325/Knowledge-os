@@ -351,6 +351,7 @@ function Splash() {
 }
 /* ── Landing ── */
 function Landing() {
+  
   const [busy, setBusy] = useState(false);
   const [installPrompt, setInstallPrompt] = useState(null);
   const login = async () => {
@@ -388,7 +389,18 @@ const installApp = async () => {
         <div style={{ position:"absolute", width:400, height:400, borderRadius:"50%", background:"rgba(99,102,241,0.06)", filter:"blur(100px)", bottom:-80, right:-80 }} />
       </div>
       {/* Nav */}
-      <nav style={{ position:"relative", zIndex:10, display:"flex", justifyContent:"space-between", alignItems:"center", padding:"14px 36px", borderBottom:"1px solid rgba(255,255,255,0.06)" }}>
+      <nav style={{
+position:"sticky",
+top:0,
+zIndex:50,
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center",
+padding:"14px 20px",
+background:"rgba(8,12,20,0.8)",
+backdropFilter:"blur(10px)",
+borderBottom:"1px solid rgba(255,255,255,0.06)"
+}}>
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
           <Logo size={30} r={8} f={14} />
           <span style={{ fontSize:"0.9rem", fontWeight:700, color:"#f0f2f8" }}>Knowledge OS</span>
@@ -414,7 +426,7 @@ Login
 </div>
       </nav>
       {/* Hero */}
-      <div style={{ textAlign:"center", padding:"80px 24px 60px", maxWidth:680, margin:"0 auto", position:"relative", zIndex:10 }}>
+      <div style={{ textAlign:"center", padding:"60px 20px 40px", maxWidth:680, margin:"0 auto", position:"relative", zIndex:10 }}>
         <div style={{ display:"inline-block", background:"rgba(14,165,233,0.08)", border:"1px solid rgba(14,165,233,0.2)", borderRadius:100, padding:"4px 16px", fontSize:"0.72rem", color:"#0ea5e9", fontWeight:700, marginBottom:28 }}>
           🚀 Your AI Study System
         </div>
@@ -422,32 +434,80 @@ Login
           Study smarter.<br />
           <span style={{ background:"linear-gradient(135deg,#0ea5e9 0%,#38bdf8 50%,#8b5cf6 100%)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>Not harder.</span>
         </h1>
-        <p style={{ fontSize:"1.05rem", color:"rgba(200,204,216,0.6)", maxWidth:480, margin:"0 auto 40px", lineHeight:1.75 }}>
+        <p style={{ fontSize:"1.05rem", color:"rgba(200,204,216,0.6)", maxWidth:520, margin:"0 auto 40px", lineHeight:1.75 }}>
           13 AI tools in one platform. Learns your style. Remembers your progress. Gets smarter every session.
         </p>
-        <button style={{ ...C.btnPrimary, padding:"14px 32px", fontSize:"0.9375rem", borderRadius:100 }} onClick={login} disabled={busy}>
-  <Gicon size={18} /> {busy ? "Connecting…" : "Get Started"}
-</button>
-{installPrompt && (
+       <div style={{
+display:"flex",
+gap:12,
+justifyContent:"center",
+flexWrap:"wrap"
+}}>
+
 <button
-onClick={installApp}
 style={{
- ...C.btnGhostSmall,
- height:36,
- padding:"0 18px"
+...C.btnPrimary,
+padding:"14px 32px",
+fontSize:"0.9375rem",
+borderRadius:100
+}}
+onClick={login}
+disabled={busy}
+>
+<Gicon size={18}/> {busy ? "Connecting…" : "Get Started"}
+</button>
+
+<button
+onClick={()=>{
+  if(installPrompt){
+    installApp()
+  } else {
+    alert("To install Knowledge OS, open this site in Chrome and add it to your home screen.")
+  }
+}}
+style={{
+padding:"14px 28px",
+borderRadius:100,
+border:"1px solid rgba(255,255,255,0.15)",
+background:"rgba(255,255,255,0.05)",
+backdropFilter:"blur(10px)",
+color:"#e8eaf0",
+fontSize:"0.9rem",
+fontWeight:600,
+cursor:"pointer"
 }}
 >
-Install App
+⬇ Install Knowledge OS
 </button>
-)}
+
+</div>
       </div>
       {/* Tool pills */}
       <div style={{ textAlign:"center", padding:"20px 24px 60px", position:"relative", zIndex:10 }}>
         <p style={{ fontSize:"0.65rem", fontWeight:700, letterSpacing:"0.12em", color:"rgba(126,132,148,0.5)", textTransform:"uppercase", marginBottom:20 }}>13 TOOLS IN ONE PLACE</p>
         <div style={{ display:"flex", flexWrap:"wrap", gap:9, justifyContent:"center", maxWidth:800, margin:"0 auto" }}>
           {["AI Tutor","Flashcards","Quiz Grind","Exam Predictor","TL;DR","Study Path","Note Vault","Study Rooms","Doubt Forum","Essay Era","Planner","Note Market","Study Dashboard"].map(t => (
-            <div key={t} style={{ padding:"7px 16px", background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.07)", borderRadius:100, fontSize:"0.8rem", color:"rgba(200,204,216,0.6)", fontWeight:500 }}>{t}</div>
-          ))}
+  <div
+    key={t}
+
+    onMouseEnter={e=>e.currentTarget.style.transform="translateY(-2px)"}
+    onMouseLeave={e=>e.currentTarget.style.transform="none"}
+
+    style={{
+      padding:"7px 16px",
+      background:"rgba(255,255,255,0.04)",
+      backdropFilter:"blur(6px)",
+      border:"1px solid rgba(255,255,255,0.08)",
+      borderRadius:100,
+      fontSize:"0.8rem",
+      color:"rgba(200,204,216,0.6)",
+      fontWeight:500,
+      transition:"all .2s"
+    }}
+  >
+    {t}
+  </div>
+))}
         </div>
       </div>
     </div>
@@ -1928,11 +1988,11 @@ function hexToRgb(hex) {
 }
 function BottomNav(){
 
-  const { tool, set } = useApp()
+  const { tool, set, screen } = useApp()
 
   const mobile = window.innerWidth < 768
 
-  if(!mobile) return null
+ if(screen !== "app") return null
 
   const items = [
     {id:"dashboard", icon:"⌂"},
