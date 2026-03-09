@@ -884,7 +884,7 @@ set({
   flex:1,
   overflowY:"auto",
   padding:"16px 20px",
-  paddingBottom:140,
+  paddingBottom:220,
   display:"flex",
   flexDirection:"column",
   gap:14
@@ -924,7 +924,7 @@ gap:9 }}>
       </div>
       <div style={{
   position:"fixed",
-  bottom:70,
+  bottom:110,
   left:"50%",
   transform:"translateX(-50%)",
   width:"92%",
@@ -935,7 +935,7 @@ gap:9 }}>
   borderRadius:30,
   padding:"10px 14px",
   boxShadow:"0 10px 30px rgba(0,0,0,0.4)",
-  zIndex:200
+  zIndex:999
 }}>
         <div style={{
   display:"flex",
