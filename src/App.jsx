@@ -211,7 +211,7 @@ function useMobile(){
 
 export default function App() {
 
-  const mobile = useMobile()
+  const mobile = window.innerWidth < 768
 
   return (
     <AppProvider>
@@ -1363,7 +1363,7 @@ function Quiz() {
     <Page title="◎ Quiz Grind" sub="AI-generated quizzes on any topic">
       <div style={{ display:"flex",
 flexWrap:"wrap",
-gap:9, marginBottom:18, padding:"13px 15px", ...C.glass, border:"1px solid rgba(255,255,255,0.07)", borderRadius:13, flexWrap:"wrap" }}>
+gap:9, marginBottom:18, padding:"13px 15px", ...C.glass, border:"1px solid rgba(255,255,255,0.07)", borderRadius:13}}>
         <input value={topic} onChange={e=>setTopic(e.target.value)} onKeyDown={e=>e.key==="Enter"&&gen()} placeholder="Topic…" style={{...C.input,flex:1,minWidth:160}} />
         <div style={{ display:"flex", gap:6 }}>
           {["easy","medium","hard"].map(d=>(
@@ -1800,7 +1800,7 @@ function BottomNav(){
 
   const { tool, set } = useApp()
 
-  const mobile = useMobile()
+  const mobile = window.innerWidth < 768
 
   if(!mobile) return null
 
