@@ -126,6 +126,7 @@ function reducer(s, a) {
   }
 }
 function AppProvider({ children }) {
+  const [installPrompt, setInstallPrompt] = useState(null);
   const [s, d] = useReducer(reducer, {
     screen: "loading", user:null, profile:null,
     tool:"dashboard", sidebar:true,
@@ -160,6 +161,16 @@ function AppProvider({ children }) {
     });
     return () => { alive=false; subscription.unsubscribe(); };
   }, []);
+  useEffect(() => {
+  const handler = (e) => {
+    e.preventDefault();
+    setInstallPrompt(e);
+  };
+
+  window.addEventListener("beforeinstallprompt", handler);
+
+  return () => window.removeEventListener("beforeinstallprompt", handler);
+}, []);
 
   async function boot(user) {
     set({ user });
@@ -187,8 +198,35 @@ function AppProvider({ children }) {
     const r = await db.addXP(s.user.id, pts);
     if (r) { set({ profile:{ ...s.profile, total_xp:r.xp, streak:r.streak } }); toast(`+${pts} XP`, "xp", "⚡"); }
   }, [s.user?.id, s.profile]);
+const installApp = async () => {
+  if (!installPrompt) return;
 
-  return <Ctx.Provider value={{ ...s, set, toast, saveKey, addXP, level:getLevel(s.profile?.total_xp||0) }}>{children}</Ctx.Provider>;
+  installPrompt.prompt();
+
+  const result = await installPrompt.userChoice;
+
+  if (result.outcome === "accepted") {
+    console.log("App installed");
+  }
+
+  setInstallPrompt(null);
+};
+  return (
+  <Ctx.Provider
+    value={{
+      ...s,
+      set,
+      toast,
+      saveKey,
+      addXP,
+      level: getLevel(s.profile?.total_xp || 0),
+      installPrompt,
+      installApp
+    }}
+  >
+    {children}
+  </Ctx.Provider>
+);
 }
 const useApp = () => useContext(Ctx);
 function useMobile(){
@@ -314,11 +352,35 @@ function Splash() {
 /* ── Landing ── */
 function Landing() {
   const [busy, setBusy] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState(null);
   const login = async () => {
     setBusy(true);
     try { await supabase.auth.signInWithOAuth({ provider:"google", options:{ redirectTo:window.location.origin } }); }
     catch(e) { console.error(e); setBusy(false); }
   };
+  useEffect(() => {
+  const handler = (e) => {
+    e.preventDefault();
+    setInstallPrompt(e);
+  };
+
+  window.addEventListener("beforeinstallprompt", handler);
+
+  return () => window.removeEventListener("beforeinstallprompt", handler);
+}, []);
+const installApp = async () => {
+  if (!installPrompt) return;
+
+  installPrompt.prompt();
+
+  const result = await installPrompt.userChoice;
+
+  if (result.outcome === "accepted") {
+    console.log("App installed");
+  }
+
+  setInstallPrompt(null);
+};
   return (
     <div style={{ minHeight:"100vh", overflowY:"auto", background:"#080c14" }}>
       <div style={{ position:"fixed", inset:0, pointerEvents:"none", overflow:"hidden" }}>
@@ -366,6 +428,18 @@ Login
         <button style={{ ...C.btnPrimary, padding:"14px 32px", fontSize:"0.9375rem", borderRadius:100 }} onClick={login} disabled={busy}>
   <Gicon size={18} /> {busy ? "Connecting…" : "Get Started"}
 </button>
+{installPrompt && (
+<button
+onClick={installApp}
+style={{
+ ...C.btnGhostSmall,
+ height:36,
+ padding:"0 18px"
+}}
+>
+Install App
+</button>
+)}
       </div>
       {/* Tool pills */}
       <div style={{ textAlign:"center", padding:"20px 24px 60px", position:"relative", zIndex:10 }}>
