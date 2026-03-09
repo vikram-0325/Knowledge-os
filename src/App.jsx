@@ -210,15 +210,19 @@ function useMobile(){
 ══════════════════════════════════ */
 
 export default function App() {
+
+  const mobile = window.innerWidth < 768
+
   return (
     <AppProvider>
       <GlobalStyles />
       <Router />
       <BottomNav />
       <ToastLayer />
-      <FloatingAI />
+      {!mobile && <FloatingAI />}
     </AppProvider>
   );
+
 }
 
 function Router() {
@@ -1229,7 +1233,16 @@ function TLDR() {
   minHeight:300
 }}>
         <div style={{ flex:1, display:"flex", flexDirection:"column", gap:10 }}>
-          <textarea value={text} onChange={e=>setText(e.target.value)} placeholder="Paste textbook content, lecture notes, articles…" style={{...C.textarea, flex:1, minHeight: window.innerWidth < 768 ? 160 : 240}} />
+          <textarea
+  value={text}
+  onChange={(e)=>setText(e.target.value)}
+  placeholder="Paste textbook content, lecture notes, articles…"
+  style={{
+    ...C.textarea,
+    flex:1,
+    minHeight: window.innerWidth < 768 ? 160 : 240
+  }}
+/>
           <button style={C.btnPrimary} onClick={run} disabled={loading||!text.trim()}>{loading?"Processing…":"✦ Summarize"}</button>
         </div>
         <div style={{ flex:1, padding:16, ...C.glass, border:"1px solid rgba(255,255,255,0.07)", borderRadius:13, overflowY:"auto" }}>
