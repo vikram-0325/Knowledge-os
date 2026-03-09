@@ -772,6 +772,16 @@ onMouseLeave={e=>e.currentTarget.style.background="transparent"}
     <div style={{ fontSize:"0.9375rem", fontWeight:700, color:"#f0f2f8" }}>
       {TOOLS.find(t=>t.id===tool)?.n}
     </div>
+    <span style={{
+fontSize:"0.65rem",
+background:"rgba(14,165,233,0.08)",
+border:"1px solid rgba(14,165,233,0.2)",
+color:"#0ea5e9",
+padding:"2px 8px",
+borderRadius:6
+}}>
+Beta
+</span>
     <div style={{ fontSize:"0.68rem", color:"rgba(126,132,148,0.45)" }}>
       {TOOLS.find(t=>t.id===tool)?.tag}
     </div>
