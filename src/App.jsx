@@ -1087,7 +1087,7 @@ set({
   flex:1,
   overflowY:"auto",
   padding:"16px 20px",
-  paddingBottom:120,
+  paddingBottom:"calc(180px + env(safe-area-inset-bottom))",
   display:"flex",
   flexDirection:"column",
   gap:14
@@ -1104,25 +1104,41 @@ set({
             </div>
           </div>
         ) : msgs.map((m,i)=>(
-          <div key={i} style={{ display:"flex",
-flexWrap:"wrap",
-gap:9, flexDirection:m.role==="user"?"row-reverse":"row", maxWidth:"min(760px,100%)" }}>
-            <div style={{ width:26, height:26, borderRadius:"50%", flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"0.72rem", fontWeight:700, background:m.role==="user"?"linear-gradient(135deg,#0ea5e9,#8b5cf6)":"rgba(14,165,233,0.1)", color:m.role==="user"?"#fff":"#0ea5e9" }}>
-              {m.role==="user"?(profile?.name||"U")[0]:"✦"}
-            </div>
-            <div style={{ maxWidth:"85%", padding:"9px 13px", borderRadius:m.role==="user"?"12px 3px 12px 12px":"3px 12px 12px 12px", background:m.role==="user"?"rgba(14,165,233,0.1)":"#111828", border:`1px solid ${m.role==="user"?"rgba(14,165,233,0.25)":"rgba(255,255,255,0.06)"}`, fontSize:"0.875rem", lineHeight:1.75, color:"#e8eaf0", whiteSpace:"pre-wrap" }}>{m.content}</div>
-          </div>
-        ))}
-        {loading && (
-          <div style={{ display:"flex",
-flexWrap:"wrap",
-gap:9 }}>
+          <div style={{
+maxWidth:"85%",
+padding:"9px 13px",
+borderRadius:m.role==="user"?"12px 3px 12px 12px":"3px 12px 12px 12px",
+background:m.role==="user"?"rgba(14,165,233,0.1)":"#111828",
+border:`1px solid ${m.role==="user"?"rgba(14,165,233,0.25)":"rgba(255,255,255,0.06)"}`,
+fontSize:"0.875rem",
+lineHeight:1.75,
+color:"#e8eaf0",
+whiteSpace:"pre-wrap",
+userSelect:"text"
+}}>
+  {m.content}
+
+{m.role === "assistant" && (
+<button
+onClick={()=>navigator.clipboard.writeText(m.content)}
+style={{
+marginTop:6,
+fontSize:"0.65rem",
+background:"none",
+border:"none",
+color:"#0ea5e9",
+cursor:"pointer"
+}}
+>
+Copy
+</button>
+)}
             <div style={{ width:26, height:26, borderRadius:"50%", background:"rgba(14,165,233,0.1)", display:"flex", alignItems:"center", justifyContent:"center", color:"#0ea5e9", fontSize:"0.875rem" }}>✦</div>
             <div style={{ padding:"9px 14px", ...C.glass, border:"1px solid rgba(255,255,255,0.06)", borderRadius:"3px 12px 12px 12px", display:"flex", gap:4, alignItems:"center" }}>
               {[0,1,2].map(i=><span key={i} style={{ width:5, height:5, borderRadius:"50%", background:"#0ea5e9", display:"inline-block", animation:`kpulse 1.2s ${i*0.18}s ease infinite` }}/>)}
             </div>
           </div>
-        )}
+        ))}
         <div ref={bottomRef} />
       </div>
       <div style={{
@@ -1414,6 +1430,25 @@ Return JSON: {"cards":[{"q":"question","a":"answer"}]}
       </div>
     );
   }
+  const study = (deck) => {
+
+  setActive(deck)
+  setIdx(0)
+  setFlipped(false)
+  setScore({k:0,u:0})
+  setMode("study")
+
+}
+
+const del = async (id) => {
+
+  await db.deleteDeck(id)
+
+  set({
+    decks: decks.filter(d => d.id !== id)
+  })
+
+}
   return (
     <Page title="⚡ Flash Mode" sub={`${decks.length} decks`} action={<button style={C.btnGhostSmall} onClick={()=>setMode(mode==="gen"?"list":"gen")}>✦ AI Generate</button>}>
       {mode==="gen" && (
