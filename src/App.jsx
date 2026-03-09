@@ -807,14 +807,20 @@ function Chat() {
   const bottomRef = useRef(null);
   const taRef = useRef(null);
 
-  useEffect(() => {
-    if (!chatId) return;
-    const s = chats.find(c=>c.id===chatId);
-    if (s?.messages) { setMsgs(s.messages); return; }
-    db.listChats(profile?.id).then(list => {
-      const found = list.find(c=>c.id===chatId);
-      if (found?.messages) setMsgs(found.messages);
-    });
+   useEffect(() => {
+
+    if (!chatId || !profile?.id) return;
+
+    supabase
+      .from("chat_sessions")
+      .select("messages")
+      .eq("id", chatId)
+      .single()
+      .then(({ data }) => {
+        if (data?.messages) setMsgs(data.messages);
+        else setMsgs([]);
+      });
+
   }, [chatId]);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior:"smooth" }); }, [msgs]);
