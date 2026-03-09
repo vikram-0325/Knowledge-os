@@ -470,6 +470,11 @@ const onTouchEnd = (e)=>{
   <div
  onTouchStart={onTouchStart}
  onTouchEnd={onTouchEnd}
+ onClick={()=>{
+   if(mobile && sidebar){
+     set({sidebar:false})
+   }
+  }}
  style={{
  display:"flex",
  height:"100dvh",
@@ -480,9 +485,13 @@ const onTouchEnd = (e)=>{
       {/* Sidebar */}
       {/* Sidebar */}
 <div style={{
-  width: mobile ? (sidebar ? 220 : 0) : (sidebar ? 218 : 50),
-  position: mobile ? "absolute" : "relative",
-  zIndex: mobile ? 100 : "auto",
+  width: mobile ? 220 : (sidebar ? 218 : 50),
+  position: mobile ? "fixed" : "relative",
+  left:0,
+  top:0,
+  transform: mobile ? (sidebar ? "translateX(0)" : "translateX(-100%)") : "none",
+  transition:"transform 0.25s cubic-bezier(.4,0,.2,1)",
+  zIndex: mobile ? 300 : "auto",
   height:"100%",
   background:"#0d1220",
   borderRight:"1px solid rgba(255,255,255,0.06)",
@@ -497,6 +506,8 @@ const onTouchEnd = (e)=>{
           <Logo size={28} r={8} f={14} style={{ flexShrink:0 }} />
           {sidebar && <span style={{ fontSize:"0.875rem", fontWeight:700, color:"#f0f2f8", whiteSpace:"nowrap" }}>Knowledge OS</span>}
         </div>
+        
+        
         {/* User card */}
         {sidebar && profile && (
           <div style={{ padding:"10px 10px", borderBottom:"1px solid rgba(255,255,255,0.06)", display:"flex", gap:8, alignItems:"flex-start" }}>
@@ -551,6 +562,18 @@ const onTouchEnd = (e)=>{
           </button>
         </div>
       </div>
+      {mobile && sidebar && (
+  <div
+    onClick={()=>set({sidebar:false})}
+    style={{
+      position:"fixed",
+      inset:0,
+      background:"rgba(0,0,0,0.45)",
+      backdropFilter:"blur(3px)",
+      zIndex:200
+    }}
+  />
+)}
 
       {/* Main area */}
       <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", minWidth:0 }}>
@@ -804,6 +827,7 @@ function Chat() {
   const [msgs, setMsgs] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const bottomRef = useRef(null);
   const taRef = useRef(null);
 
@@ -843,6 +867,7 @@ function Chat() {
 
   setMsgs(next);
   setInput("");
+  setExpanded(false);
   setLoading(true);
 
   try {
@@ -924,7 +949,7 @@ gap:9 }}>
       </div>
       <div style={{
   position:"fixed",
-  bottom:110,
+  bottom: expanded ? 200 : 95,
   left:"50%",
   transform:"translateX(-50%)",
   width:"92%",
@@ -935,7 +960,7 @@ gap:9 }}>
   borderRadius:30,
   padding:"10px 14px",
   boxShadow:"0 10px 30px rgba(0,0,0,0.4)",
-  zIndex:999
+  zIndex:200
 }}>
         <div style={{
   display:"flex",
@@ -951,6 +976,7 @@ gap:9 }}>
           <textarea
   ref={taRef}
   value={input}
+  onFocus={()=>setExpanded(true)}
   onChange={(e)=>{
     setInput(e.target.value)
 
