@@ -630,9 +630,28 @@ const onTouchEnd = (e)=>{
           ))}
         </nav>
         <div style={{ borderTop:"1px solid rgba(255,255,255,0.06)", padding:"8px 5px" }}>
-          <button onClick={()=>supabase.auth.signOut()} style={{ width:"100%", display:"flex", alignItems:"center", gap:8, padding:"8px 8px", borderRadius:8, border:"none", background:"transparent", color:"rgba(126,132,148,0.4)", cursor:"pointer", fontSize:"0.78rem", fontFamily:"inherit", transition:"all 0.15s" }}>
-            <span>←</span>{sidebar&&<span>Sign out</span>}
-          </button>
+          <button
+  onClick={()=>supabase.auth.signOut()}
+  onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.05)"}
+onMouseLeave={e=>e.currentTarget.style.background="transparent"}
+  style={{
+    width:"100%",
+    display:"flex",
+    alignItems:"center",
+    gap:8,
+    padding:"8px 8px",
+    borderRadius:8,
+    border:"none",
+    background:"transparent",
+    color:"rgba(200,204,216,0.7)",
+    cursor:"pointer",
+    fontSize:"0.8rem",
+    fontFamily:"inherit"
+  }}
+>
+  <span>🚪</span>
+  {sidebar && <span>Sign out</span>}
+</button>
         </div>
       </div>
       {mobile && sidebar && (
