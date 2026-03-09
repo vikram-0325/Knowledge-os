@@ -404,7 +404,7 @@ borderBottom:"1px solid rgba(255,255,255,0.06)"
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
           <Logo size={30} r={8} f={14} />
           <span style={{ fontSize:"0.9rem", fontWeight:700, color:"#f0f2f8" }}>Knowledge OS</span>
-          <span style={C.badge}>v3.0</span>
+          <span style={C.badge}>v0.9 Beta</span>
         </div>
         <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
 
@@ -437,6 +437,13 @@ Login
         <p style={{ fontSize:"1.05rem", color:"rgba(200,204,216,0.6)", maxWidth:520, margin:"0 auto 40px", lineHeight:1.75 }}>
           13 AI tools in one platform. Learns your style. Remembers your progress. Gets smarter every session.
         </p>
+        <div style={{
+marginTop:12,
+fontSize:"0.75rem",
+color:"rgba(200,204,216,0.45)"
+}}>
+Beta version • Features may change • Feedback welcome
+</div>
        <div style={{
 display:"flex",
 gap:12,
