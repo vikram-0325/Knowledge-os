@@ -880,7 +880,15 @@ set({
 
   return (
     <div style={{ height:"100%", display:"flex", flexDirection:"column", overflow:"hidden" }}>
-      <div style={{ flex:1, overflowY:"auto", padding:"16px 20px", display:"flex", flexDirection:"column", gap:14 }}>
+      <div style={{
+  flex:1,
+  overflowY:"auto",
+  padding:"16px 20px",
+  paddingBottom:140,
+  display:"flex",
+  flexDirection:"column",
+  gap:14
+}}>
         {msgs.length===0 ? (
           <div style={{ display:"flex", flexDirection:"column", alignItems:"center", paddingTop:60, gap:12 }}>
             <div style={{ fontSize:"2.5rem", opacity:0.2 }}>✦</div>
@@ -914,11 +922,64 @@ gap:9 }}>
         )}
         <div ref={bottomRef} />
       </div>
-      <div style={{ padding:"10px 18px 14px", borderTop:"1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ display:"flex",
-flexWrap:"wrap",
-gap:9, alignItems:"flex-end", ...C.glass, border:"1px solid rgba(255,255,255,0.08)", borderRadius:14, padding:"9px 11px", transition:"all 0.15s" }}>
-          <textarea ref={taRef} value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send();}}} placeholder="Ask anything… (Enter to send)" rows={1} style={{ flex:1, background:"none", border:"none", outline:"none", resize:"none", color:"#e8eaf0", fontSize:"0.875rem", fontFamily:"inherit", lineHeight:1.6, maxHeight:120 }} />
+      <div style={{
+  position:"fixed",
+  bottom:70,
+  left:"50%",
+  transform:"translateX(-50%)",
+  width:"92%",
+  maxWidth:700,
+  background:"rgba(17,24,40,0.9)",
+  backdropFilter:"blur(14px)",
+  border:"1px solid rgba(255,255,255,0.08)",
+  borderRadius:30,
+  padding:"10px 14px",
+  boxShadow:"0 10px 30px rgba(0,0,0,0.4)",
+  zIndex:200
+}}>
+        <div style={{
+  display:"flex",
+  gap:9,
+  alignItems:"flex-end",
+  width:"100%",
+  ...C.glass,
+  border:"1px solid rgba(255,255,255,0.08)",
+  borderRadius:14,
+  padding:"9px 11px",
+  transition:"all 0.15s"
+}}>
+          <textarea
+  ref={taRef}
+  value={input}
+  onChange={(e)=>{
+    setInput(e.target.value)
+
+    // auto expand textarea
+    e.target.style.height = "auto"
+    e.target.style.height = e.target.scrollHeight + "px"
+  }}
+  onKeyDown={(e)=>{
+    if(e.key==="Enter" && !e.shiftKey){
+      e.preventDefault()
+      send()
+    }
+  }}
+  placeholder="Ask anything… (Enter to send)"
+  rows={1}
+  style={{
+    flex:1,
+    background:"none",
+    border:"none",
+    outline:"none",
+    resize:"none",
+    color:"#e8eaf0",
+    fontSize:"0.875rem",
+    fontFamily:"inherit",
+    lineHeight:1.6,
+    maxHeight:120,
+    overflow:"auto"
+  }}
+/>
           <button onClick={send} disabled={!input.trim()||loading} style={{ width:32, height:32, borderRadius:8, border:"none", background:input.trim()&&!loading?"#0ea5e9":"rgba(255,255,255,0.05)", color:"#fff", fontSize:"1.1rem", cursor:input.trim()&&!loading?"pointer":"default", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, transition:"all 0.15s" }}>↑</button>
         </div>
         <div style={{ textAlign:"center", fontSize:"0.67rem", color:"rgba(126,132,148,0.3)", marginTop:5 }}>+5 XP per message · AI remembers your profile</div>
