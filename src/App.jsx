@@ -1317,7 +1317,16 @@ function TLDR() {
   const run = async()=>{ if(!text.trim()) return; setLoading(true); const P={bullets:"Summarize in clear bullet points:",paragraph:"Write a concise 3-sentence summary:",eli12:"Explain simply like I'm 12:",outline:"Create a structured outline:",exam:"Extract the most important exam facts:"}; try{ const r=await callAI([{role:"user",content:`${P[mode]}\n\n${text}`}],"",profile); setOut(r); addXP(8); }catch(e){toast(e.message,"error","✗");} setLoading(false); };
   return (
     <Page title="≡ TL;DR Machine" sub="Paste anything, get the gist">
-      <div style={{ display:"flex", gap:7, marginBottom:14, flexWrap:"wrap" }}>
+      <div style={{
+ display:"flex",
+ flexWrap:"wrap",
+ gap:9,
+ marginBottom:18,
+ padding:"13px 15px",
+ ...C.glass,
+ border:"1px solid rgba(255,255,255,0.07)",
+ borderRadius:13
+}}>
         {[["bullets","Bullets"],["paragraph","Summary"],["eli12","ELI12"],["outline","Outline"],["exam","Exam Prep"]].map(([v,l])=>(
           <button key={v} onClick={()=>setMode(v)} style={{ padding:"5px 13px", borderRadius:100, border:`1px solid ${mode===v?"rgba(14,165,233,0.35)":"rgba(255,255,255,0.07)"}`, background:mode===v?"rgba(14,165,233,0.1)":"transparent", color:mode===v?"#0ea5e9":"rgba(200,204,216,0.45)", fontSize:"0.78rem", fontWeight:600, cursor:"pointer", fontFamily:"inherit" }}>{l}</button>
         ))}
