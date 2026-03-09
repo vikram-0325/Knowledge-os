@@ -710,7 +710,27 @@ onMouseLeave={e=>e.currentTarget.style.background="transparent"}
     </div>
   </div>
 
-  {profile && <span style={C.badge}>⚡ {profile.total_xp||0} XP</span>}
+  {profile && (
+<>
+<span style={C.badge}>⚡ {profile.total_xp||0} XP</span>
+
+<button
+onClick={()=>supabase.auth.signOut()}
+style={{
+marginLeft:10,
+background:"rgba(244,63,94,0.1)",
+border:"1px solid rgba(244,63,94,0.3)",
+color:"#f43f5e",
+borderRadius:8,
+padding:"4px 10px",
+fontSize:"0.7rem",
+cursor:"pointer"
+}}
+>
+Logout
+</button>
+</>
+)}
 <span style={{
  padding:"4px 10px",
  borderRadius:8,
@@ -751,11 +771,12 @@ function Dashboard() {
     { id:"tldr",c:"#38bdf8",e:"≡",l:"TL;DR" },
   ];
   return (
-    <div style={{ 
-  height:"100%", 
-  overflowY:"auto", 
-  padding:"24px 28px 140px", 
-  maxWidth:860 
+    <div style={{
+  height:"100%",
+  overflowY:"auto",
+  padding:"24px 20px 140px",
+  maxWidth:860,
+  margin:"0 auto"
 }}>
       {/* Header */}
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:24 }}>
@@ -1927,7 +1948,7 @@ function BottomNav(){
       bottom:0,
       left:0,
       right:0,
-      height:"calc(60px + env(safe-area-inset-bottom))",
+      height:"70px",
 paddingBottom:"env(safe-area-inset-bottom)",
       background:"#0d1220",
       borderTop:"1px solid rgba(255,255,255,0.06)",
